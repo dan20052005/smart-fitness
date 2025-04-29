@@ -2,24 +2,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.util.ArrayList;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.BufferedReader;
-import java.util.Arrays;
-import java.io.FileReader;
-import java.util.Date;
 
-class user {
+class User {
     private String name;
     private int age;
-    private float weight;
+    private double weight;
     private ArrayList<String> goals;
 
-    public user() {
+    public User() {
         goals = new ArrayList<>();
     }
 
@@ -52,7 +43,7 @@ class user {
 
     }
 
-    public float getWeight() {
+    public double getWeight() {
         return weight;
 
     }
@@ -93,10 +84,13 @@ class Workout{
 
     private Type type;
 
-    public Workout(String typeName) {
-        this.type = Type.valueOf(typeName.toUpperCase());
+    public Workout() {
         workoutlog = new ArrayList<>();
 
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 
     public String getType() {
@@ -148,7 +142,81 @@ class Workout{
 
 public class Main {
     public static void main(String[] args) {
-        JFrame frame = new JFrame("FITNESS TRACKER");
+        Workout workout = new Workout();
+        User user = new User();
+
+
+
+
+
+        JFrame frame = new JFrame("Fitness Tracker");
+        frame.setSize(400, 400);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new FlowLayout());
+
+        // Display area for submitted user data
+        JTextArea displayArea = new JTextArea(8, 30);
+        displayArea.setEditable(false);
+        frame.add(displayArea);
+
+        // Overlay panel for user input
+        JPanel overlayPanel = new JPanel(new GridLayout(0, 2, 5, 5));
+        overlayPanel.setBackground(new Color(240, 240, 240));
+        overlayPanel.setBorder(BorderFactory.createTitledBorder("Enter User Info"));
+
+        // Input fields
+        JTextField nameField = new JTextField();
+        JTextField ageField = new JTextField();
+        JTextField weightField = new JTextField();
+        JTextField goal1Field = new JTextField();
+        JTextField goal2Field = new JTextField();
+        JTextField goal3Field = new JTextField();
+
+        // Add fields to overlay
+        overlayPanel.add(new JLabel("Name:")); overlayPanel.add(nameField);
+        overlayPanel.add(new JLabel("Age:")); overlayPanel.add(ageField);
+        overlayPanel.add(new JLabel("Weight:")); overlayPanel.add(weightField);
+        overlayPanel.add(new JLabel("Goal 1:")); overlayPanel.add(goal1Field);
+        overlayPanel.add(new JLabel("Goal 2:")); overlayPanel.add(goal2Field);
+        overlayPanel.add(new JLabel("Goal 3:")); overlayPanel.add(goal3Field);
+
+        JButton submitButton = new JButton("Submit");
+        overlayPanel.add(new JLabel()); // filler
+        overlayPanel.add(submitButton);
+
+        frame.add(overlayPanel);
+
+        // Submit button action
+        submitButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String name = nameField.getText();
+                String age = ageField.getText();
+                String weight = weightField.getText();
+                String goal1 = goal1Field.getText();
+                String goal2 = goal2Field.getText();
+                String goal3 = goal3Field.getText();
+
+                // Handle empty goals
+                if (goal1.isEmpty()) goal1 = "N/A";
+                if (goal2.isEmpty()) goal2 = "N/A";
+                if (goal3.isEmpty()) goal3 = "N/A";
+
+                // Hide form
+                overlayPanel.setVisible(false);
+
+                // Show data in text area
+                displayArea.setText("User Info:\n");
+                displayArea.append("Name: " + name + "\n");
+                displayArea.append("Age: " + age + "\n");
+                displayArea.append("Weight: " + weight + "\n");
+                displayArea.append("Goals:\n- " + goal1 + "\n- " + goal2 + "\n- " + goal3);
+            }
+        });
+
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+        JFrame frame1 = new JFrame("FITNESS TRACKER");
         frame.setSize(400, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
@@ -185,5 +253,30 @@ public class Main {
         dateField.setPreferredSize(new Dimension(150, 25));
         durationField.setPreferredSize(new Dimension(75, 25));
         caloriesField.setPreferredSize(new Dimension(75, 25));
-    }
+
+        JButton submit = new JButton("Submit");
+        frame.add(submit);
+        submit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String nameContent = nameField.getText();
+                workoutField.setName(nameContent);
+
+                String dateContent = dateField.getText();
+                workoutField.date(dateContent);
+
+                String priorityContent = priorityField.getText();
+                workoutField.setPriority(priorityContent);
+
+                workoutField.setTasks();
+
+                JCheckBox check = new JCheckBox("Name: " + list.getName() + " Date: " + list.getDate() + " Priority: " + list.getPriority());
+
+
+
+            }
+
+
 }
+
+
