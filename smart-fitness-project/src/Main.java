@@ -57,18 +57,14 @@ class User {
 }
 
 class Workout{
-    private enum Type{
-        RUNNING, CYCLING, SWIMMING, STRENGTH, YOGA
-
-    }
-
+    private String Type;
     private ArrayList<ArrayList<Object>> workoutlog;
     private String Date;
-    private float Duration;
+    private Double Duration;
     private float Calories;
 
 
-    public float getDuration() {
+    public Double getDuration() {
         return Duration;
 
     }
@@ -82,23 +78,21 @@ class Workout{
 
     }
 
-    private Type type;
 
     public Workout() {
         workoutlog = new ArrayList<>();
 
     }
 
-    public void setType(Type type) {
-        this.type = type;
+    public void setType(String type) {
+        this.Type = type;
     }
 
     public String getType() {
-        return type.name();
-
+        return Type;
     }
 
-    public void setDuration(float duration) {
+    public void setDuration(Double duration) {
         this.Duration = duration;
 
     }
@@ -115,7 +109,7 @@ class Workout{
 
     public void setWorkoutLog(){
         ArrayList<Object> workout = new ArrayList<>();
-        workout.add(type);
+        workout.add(Type);
         workout.add(Date);
         workout.add(Duration);
         workout.add(Calories);
@@ -259,24 +253,43 @@ public class Main {
         submit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String nameContent = nameField.getText();
-                workoutField.setName(nameContent);
+                String typeContent = workoutField.getText();
+                workout.setType(typeContent);
 
                 String dateContent = dateField.getText();
-                workoutField.date(dateContent);
+                workout.setDate(dateContent);
 
-                String priorityContent = priorityField.getText();
-                workoutField.setPriority(priorityContent);
+                int caloriesContent;
+                try {
+                    caloriesContent = Integer.parseInt(caloriesField.getText());
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(frame, "Calories must be a whole number.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
-                workoutField.setTasks();
+                workout.setCalories(caloriesContent);
 
-                JCheckBox check = new JCheckBox("Name: " + list.getName() + " Date: " + list.getDate() + " Priority: " + list.getPriority());
+                Double durationContent = Double.valueOf(durationField.getText());
+                workout.setDuration(durationContent);
+
+                workout.setWorkoutLog();
+
+                JCheckBox check = new JCheckBox("Type: " + workout.getType() + " Date: " + workout.getDate() + " Calories: " + workout.getCalories() + " Duration: " + workout.getDuration());
+
+                panel.add(check);
+                panel.add(check);
+                frame.revalidate();
+                frame.repaint();
+
 
 
 
             }
 
+        });
 
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+        ;}
 }
-
-
